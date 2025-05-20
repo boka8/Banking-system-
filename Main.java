@@ -52,6 +52,8 @@ public class Main {
                 System.out.println("2. Edit or Remove Asset");
                 System.out.println("3. Sign Out");
                 System.out.println("4. Get Report");
+                System.out.println("5. Zakat & Compliance");
+                System.out.println("6. Exit");
                 System.out.print("Choose an option: ");
                 int assetChoice = scanner.nextInt();
                 scanner.nextLine(); // consume newline
@@ -107,8 +109,38 @@ public class Main {
                     } catch (Exception e) {
                         System.out.println("Invalid date format or error occurred.");
                     }
+                } else if (assetChoice == 5) {
+                    // --- ZAKAT CALCULATION LOGIC ---
+                    System.out.println("Zakat & Compliance - Zakat Estimator");
+                    Map<String, Double> assets = new HashMap<>();
+                    while (true) {
+                        System.out.print("Enter asset name (or 'done' to finish): ");
+                        String assetName = scanner.nextLine();
+                        if (assetName.equalsIgnoreCase("done")) break;
+                        System.out.print("Enter asset value: ");
+                        double value = scanner.nextDouble();
+                        scanner.nextLine(); // consume newline
+                        assets.put(assetName, value);
+                    }
+                    if (assets.isEmpty()) {
+                        System.out.println("No assets entered. Please enter investment details.");
+                    } else {
+                        ZakatCalculator.printZakatPerAsset(assets);
+                        double totalZakat = ZakatCalculator.calculateZakat(assets);
+                        System.out.printf("Total Zakat Due: %.2f\n", totalZakat);
+                        System.out.print("Press D to download PDF report or any other key to skip: ");
+                        String download = scanner.nextLine();
+                        if (download.equalsIgnoreCase("D")) {
+                            // Simulate PDF generation
+                            System.out.println("PDF report generated with zakat calculations. (Simulation)");
+                        }
+                    }
+                } else if (assetChoice == 6) {
+                    System.out.println("Thank you for using our banking app. Goodbye!");
+                    scanner.close();
+                    return;
                 } else {
-                    System.out.println("Invalid option.");
+                    System.out.println("Invalid option. Please try again.");
                 }
             }
         }
